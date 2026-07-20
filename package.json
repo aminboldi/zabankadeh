@@ -1,0 +1,14 @@
+{
+  "name": "zabankadeh",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "predev": "npm run build --workspace @zabankadeh/contracts",
+    "dev": "npm run dev --workspace @zabankadeh/api & npm run dev --workspace @zabankadeh/web",
+    "build": "npm run build --workspace @zabankadeh/contracts && npm run build --workspace @zabankadeh/api && npm run build --workspace @zabankadeh/web",
+    "test": "npm run test --workspace @zabankadeh/api",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  },
+  "engines": { "node": ">=22" }
+}
