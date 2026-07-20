@@ -29,9 +29,25 @@ create table user_roles (
   role text not null check (role in ('owner','branch_manager','registrar','finance','academic_supervisor','instructor','student','guardian')),
   primary key (user_id, role, branch_id)
 );
+
+create table auth_otp_challenges (
+  id uuid primary key default gen_random_uuid(), tenant_id uuid not null references tenants(id),
+  mobile text not null, code_hash text not null, expires_at timestamptz not null,
+  consumed_at timestamptz, attempts integer not null default 0 check (attempts >= 0),
+  created_at timestamptz not null default now()
+);
+create index auth_otp_challenges_lookup_idx on auth_otp_challenges (tenant_id, mobile, created_at desc);
+
+create table auth_sessions (
+  id uuid primary key default gen_random_uuid(), tenant_id uuid not null references tenants(id),
+  user_id uuid not null references users(id), token_hash text not null unique,
+  expires_at timestamptz not null, revoked_at timestamptz,
+  created_at timestamptz not null default now(), last_seen_at timestamptz not null default now()
+);
+create index auth_sessions_user_idx on auth_sessions (tenant_id, user_id, expires_at);
 create table people (
   id uuid primary key default gen_random_uuid(), tenant_id uuid not null references tenants(id),
-  first_name text not null, last_name text not null, mobile text, email text, birth_date date, national_id text,
+  first_name text not null, last_name text not null, mobile text, email text, birth_date date, gender text check (gender in ('female','male','other')), national_id text,
   preferred_locale text not null default 'fa', created_at timestamptz not null default now()
 );
 create index people_tenant_name_idx on people (tenant_id, last_name, first_name);
@@ -67,11 +83,14 @@ create table terms (
   id uuid primary key default gen_random_uuid(), tenant_id uuid not null references tenants(id),
   name text not null, starts_on date not null, ends_on date not null, status text not null default 'draft', check (ends_on >= starts_on)
 );
+insert into terms (tenant_id, name, starts_on, ends_on, status)
+select id, 'ترم تابستان ۱۴۰۵', '2026-06-22', '2026-09-22', 'active'
+from tenants where slug = 'demo' and not exists (select 1 from terms where tenant_id = tenants.id);
 create table classes (
   id uuid primary key default gen_random_uuid(), tenant_id uuid not null references tenants(id), branch_id uuid not null references branches(id),
   term_id uuid not null references terms(id), level_id uuid not null references program_levels(id), instructor_id uuid references instructors(id),
   room_id uuid references rooms(id), code text not null, capacity integer not null check (capacity > 0),
-  fee_rials bigint not null check (fee_rials >= 0), status text not null default 'draft' check (status in ('draft','active','completed','cancelled')),
+  fee_rials bigint not null check (fee_rials >= 0), class_type text not null default 'in_person' check (class_type in ('in_person','online','hybrid')), status text not null default 'draft' check (status in ('draft','active','completed','cancelled')),
   unique (tenant_id, code)
 );
 create table class_sessions (
