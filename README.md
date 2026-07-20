@@ -28,7 +28,7 @@ npm run dev
 
 The public site runs at `http://localhost:3000`, the staff preview at `/admin`, the assessment at `/assessment`, and the API at `http://localhost:4000/v1`. PostgreSQL is deliberately exposed on port `5433` to avoid colliding with a locally installed database.
 
-The development admin endpoint uses `x-admin-key: demo-admin`. Replace `ADMIN_DEMO_KEY`, and replace this temporary mechanism with OTP sessions and role checks before any production deployment.
+The admin endpoint uses phone OTP sessions and role checks. For local development, set `AUTH_BOOTSTRAP_MOBILE` to the phone number that should receive the initial owner role after OTP verification. This bootstrap behavior is disabled in production.
 
 ## Verification
 
@@ -45,7 +45,11 @@ docker compose exec -T postgres psql -U zabankadeh -d zabankadeh -c "select coun
 - `GET /v1/public/institute`
 - `POST /v1/public/assessments/attempts`
 - `POST /v1/public/assessments/attempts/:attemptId/submit`
-- `GET /v1/admin/dashboard` with the development admin key
+- `POST /v1/auth/otp/request`
+- `POST /v1/auth/otp/verify`
+- `POST /v1/auth/otp/session`
+- `POST /v1/auth/logout`
+- `GET /v1/admin/dashboard` with an authenticated staff session
 
 Assessment answer keys never leave the API. Submission locks the attempt, rejects expiry or replay, records the scoring version, and persists a reproducible result.
 

@@ -8,8 +8,8 @@ export interface SmsProvider {
 export class ConsoleSmsProvider implements SmsProvider {
   async send(message: SmsMessage): Promise<SmsReceipt> {
     const messageId = `console-${Date.now()}`;
-    // Development provider: do not use for sensitive message bodies in shared logs.
-    console.info(`[sms:${messageId}] queued for ${message.recipient}`);
+    // The console provider is for local development only, so show the OTP body.
+    console.info(`[sms:${messageId}] ${message.recipient}: ${message.body}`);
     return { provider: "console", messageId };
   }
 }
