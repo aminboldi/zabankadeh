@@ -15,6 +15,16 @@
 - Student list/search, registration, guardian details, Jalali birth dates, gender, generic age/gender avatars, detail view, editing, and status changes
 - Instructor list and registration
 - Class list and creation with branch, term, language, level, instructor, room, class type, capacity, and rial tuition formatting
+- Session scheduling with Jalali date/time pickers, weekly recurrence, room conflict checks, and Google Meet/Skyroom links
+- Responsive weekly and Jalali monthly calendars; clicking a day opens a prefilled session form for that date
+- Class roster management with enrollment creation and enrollment status updates
+- Session-based attendance recording with present, absent, late, excused, and notes
+- Instructor OTP accounts are recognized by their registered mobile and their session list is restricted to assigned sessions
+- Instructor accounts land in a simplified attendance workspace with administrative navigation hidden
+- Finance workflow with rial invoices, Jalali due dates, outstanding balances, and manual payment recording
+- Management reports overview with enrollment, scheduled sessions, attendance, and outstanding finance metrics
+- Finance invoice ledger CSV export with Persian labels and rial amounts
+- Printable Persian invoice receipts from the finance ledger
 
 ## Current demo data
 
@@ -24,7 +34,10 @@
 
 ## Next work
 
-- Class sessions and calendar scheduling
+- Refine calendar event editing/drag-and-drop and recurring-event management
+- Add payment gateway integrations, exports, and scheduled reports
+- Finance constraint: all payment flows target Iranian users and Iranian payment gateways only; amounts remain in rial and foreign gateways/accounts are out of scope
+- Payment gateway configuration/status endpoint and ZarinPal-compatible adapter are available; manual payments remain the default until merchant credentials and callback URL are configured
 - Enrollment and attendance
 - Billing and payment workflows
 - Replace additive local-volume fixes with a repeatable migration runner

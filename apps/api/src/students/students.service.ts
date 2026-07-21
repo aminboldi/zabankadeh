@@ -176,7 +176,7 @@ function jalaliToGregorian(value: string) {
   const match = /^(\d{4})[\/-](\d{1,2})[\/-](\d{1,2})$/.exec(value);
   if (!match) throw new BadRequestException("Birth date must use Jalali format YYYY/MM/DD");
   let jy = Number(match[1]) - 979; const jm = Number(match[2]); const jd = Number(match[3]);
-  if (jm < 1 || jm > 12 || jd < 1 || jd > (jm <= 6 ? 31 : jm < 12 ? 30 : 30)) throw new BadRequestException("Birth date is invalid");
+  if (jm < 1 || jm > 12 || jd < 1 || jd > (jm <= 6 ? 31 : jm < 12 ? 30 : isJalaliLeap(Number(match[1])) ? 30 : 29)) throw new BadRequestException("Birth date is invalid");
   let gy = 1600 + 400 * Math.floor(jy / 146097); jy %= 146097;
   if (jy >= 36525) { gy += 100 * Math.floor(--jy / 36524); jy %= 36524; if (jy >= 365) jy++; }
   gy += 4 * Math.floor(jy / 1461); jy %= 1461;
@@ -189,6 +189,8 @@ function jalaliToGregorian(value: string) {
   while (remaining >= monthDays[gm]) remaining -= monthDays[gm++];
   return `${gy.toString().padStart(4, "0")}-${(gm + 1).toString().padStart(2, "0")}-${(remaining + 1).toString().padStart(2, "0")}`;
 }
+
+function isJalaliLeap(year: number) { return ((year + 38) * 682) % 2816 < 682; }
 
 function gregorianToJalali(value: string) {
   const [gy, gm, gd] = value.split("-").map(Number); let gYear = gy - 1600; const gMonth = gm - 1; const gDay = gd - 1;

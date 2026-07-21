@@ -116,3 +116,68 @@ export interface ClassOptions {
   instructors: Array<{ id: string; name: string }>;
   terms: Array<{ id: string; name: string }>;
 }
+
+export interface ClassSessionSummary {
+  id: string;
+  classId: string;
+  classCode: string;
+  level: string;
+  language: TargetLanguage;
+  startsAt: string;
+  endsAt: string;
+  instructorName: string | null;
+  roomName: string | null;
+  status: string;
+  recurrenceRule: "none" | "weekly";
+  meetingProvider: "none" | "google_meet" | "skyroom" | "other";
+  meetingUrl: string | null;
+}
+
+export interface ClassEnrollmentSummary {
+  id: string;
+  studentId: string;
+  studentNumber: string;
+  firstName: string;
+  lastName: string;
+  mobile: string | null;
+  status: "pending" | "active" | "frozen" | "transferred" | "cancelled" | "completed";
+  enrolledAt: string;
+}
+
+export interface AttendanceEntry {
+  enrollmentId: string;
+  studentId: string;
+  studentNumber: string;
+  firstName: string;
+  lastName: string;
+  status: "present" | "absent" | "late" | "excused" | null;
+  note: string | null;
+  recordedAt: string | null;
+}
+
+export interface InvoiceSummary {
+  id: string;
+  number: string;
+  studentId: string;
+  studentName: string;
+  totalRials: number;
+  balanceRials: number;
+  status: "draft" | "issued" | "partial" | "paid" | "void" | "refunded";
+  dueOn: string | null;
+  createdAt: string;
+}
+
+export interface ReportOverview {
+  generatedAt: string;
+  activeStudents: number;
+  activeClasses: number;
+  scheduledSessions: number;
+  outstandingRials: number;
+  attendance: { present: number; absent: number; late: number; excused: number; rate: number };
+}
+
+export interface PaymentGatewayStatus {
+  provider: "manual" | "zarinpal";
+  configured: boolean;
+  label: string;
+}
