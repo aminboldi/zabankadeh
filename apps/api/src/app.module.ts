@@ -29,9 +29,11 @@ import { ReportsController } from "./reports.controller";
 import { ReportsService } from "./reports.service";
 import { PaymentGatewayController } from "./payment-gateway.controller";
 import { PaymentGatewayService } from "./integrations/payment-gateways";
+import { AdminAssessmentController } from "./assessment/admin-assessment.controller";
+import { AdminAssessmentService } from "./assessment/admin-assessment.service";
 
 @Module({
-  controllers: [HealthController, PublicController, AssessmentController, AdminController, AuthController, StudentsController, InstructorsController, ClassesController, ClassSessionsController, EnrollmentsController, AttendanceController, FinanceController, ReportsController, PaymentGatewayController],
-  providers: [DatabaseService, AssessmentService, AuthService, StudentsService, InstructorsService, ClassesService, ClassSessionsService, EnrollmentsService, AttendanceService, FinanceService, ReportsService, PaymentGatewayService, AuthGuard, RolesGuard, { provide: APP_INTERCEPTOR, useClass: AuditInterceptor }],
+  controllers: [HealthController, PublicController, AssessmentController, AdminController, AuthController, StudentsController, InstructorsController, ClassesController, ClassSessionsController, EnrollmentsController, AttendanceController, FinanceController, ReportsController, PaymentGatewayController, AdminAssessmentController],
+  providers: [DatabaseService, AssessmentService, AuthService, StudentsService, InstructorsService, ClassesService, ClassSessionsService, EnrollmentsService, AttendanceService, FinanceService, ReportsService, PaymentGatewayService, AdminAssessmentService, AuthGuard, RolesGuard, { provide: APP_INTERCEPTOR, useClass: AuditInterceptor }],
 })
 export class AppModule {}

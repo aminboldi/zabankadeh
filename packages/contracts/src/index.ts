@@ -131,6 +131,8 @@ export interface ClassSessionSummary {
   recurrenceRule: "none" | "weekly";
   meetingProvider: "none" | "google_meet" | "skyroom" | "other";
   meetingUrl: string | null;
+  instructorId?: string | null;
+  roomId?: string | null;
 }
 
 export interface ClassEnrollmentSummary {
@@ -180,4 +182,20 @@ export interface PaymentGatewayStatus {
   provider: "manual" | "zarinpal";
   configured: boolean;
   label: string;
+}
+
+export interface AssessmentAttemptSummary {
+  id: string;
+  candidateName: string;
+  candidateMobile: string | null;
+  language: TargetLanguage;
+  ageBand: AgeBand;
+  score: number | null;
+  recommendedBand: CefrBand | null;
+  confidence: "low" | "medium" | "high" | null;
+  overrideBand?: CefrBand | null;
+  overrideReason?: string | null;
+  studentId?: string | null;
+  submittedAt: string | null;
+  createdAt: string;
 }
