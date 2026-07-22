@@ -55,6 +55,13 @@ export class AuthService {
           [tenantId, userResult.rows[0].id],
         );
       }
+      await client.query(
+        `insert into user_roles (tenant_id, user_id, role, branch_id)
+         select $1, $2, 'instructor', (select id from branches where tenant_id = $1 order by id limit 1)
+         from instructors i join people p on p.id = i.person_id and p.tenant_id = i.tenant_id
+         where i.tenant_id = $1 and p.mobile = $3 and i.status = 'active'
+         on conflict (user_id, role, branch_id) do nothing`, [tenantId, userResult.rows[0].id, mobile],
+      );
       const user = await this.loadUser(client, tenantId, userResult.rows[0].id);
       const token = randomBytes(32).toString("base64url");
       const expiresAt = new Date(Date.now() + SESSION_TTL_DAYS * 86400000);

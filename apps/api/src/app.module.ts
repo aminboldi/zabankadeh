@@ -17,9 +17,23 @@ import { InstructorsController } from "./instructors/instructors.controller";
 import { InstructorsService } from "./instructors/instructors.service";
 import { ClassesController } from "./classes/classes.controller";
 import { ClassesService } from "./classes/classes.service";
+import { ClassSessionsController } from "./classes/class-sessions.controller";
+import { ClassSessionsService } from "./classes/class-sessions.service";
+import { EnrollmentsController } from "./classes/enrollments.controller";
+import { EnrollmentsService } from "./classes/enrollments.service";
+import { AttendanceController } from "./classes/attendance.controller";
+import { AttendanceService } from "./classes/attendance.service";
+import { FinanceController } from "./finance.controller";
+import { FinanceService } from "./finance.service";
+import { ReportsController } from "./reports.controller";
+import { ReportsService } from "./reports.service";
+import { PaymentGatewayController } from "./payment-gateway.controller";
+import { PaymentGatewayService } from "./integrations/payment-gateways";
+import { AdminAssessmentController } from "./assessment/admin-assessment.controller";
+import { AdminAssessmentService } from "./assessment/admin-assessment.service";
 
 @Module({
-  controllers: [HealthController, PublicController, AssessmentController, AdminController, AuthController, StudentsController, InstructorsController, ClassesController],
-  providers: [DatabaseService, AssessmentService, AuthService, StudentsService, InstructorsService, ClassesService, AuthGuard, RolesGuard, { provide: APP_INTERCEPTOR, useClass: AuditInterceptor }],
+  controllers: [HealthController, PublicController, AssessmentController, AdminController, AuthController, StudentsController, InstructorsController, ClassesController, ClassSessionsController, EnrollmentsController, AttendanceController, FinanceController, ReportsController, PaymentGatewayController, AdminAssessmentController],
+  providers: [DatabaseService, AssessmentService, AuthService, StudentsService, InstructorsService, ClassesService, ClassSessionsService, EnrollmentsService, AttendanceService, FinanceService, ReportsService, PaymentGatewayService, AdminAssessmentService, AuthGuard, RolesGuard, { provide: APP_INTERCEPTOR, useClass: AuditInterceptor }],
 })
 export class AppModule {}

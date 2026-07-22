@@ -96,6 +96,7 @@ create table classes (
 create table class_sessions (
   id uuid primary key default gen_random_uuid(), tenant_id uuid not null references tenants(id), class_id uuid not null references classes(id),
   instructor_id uuid references instructors(id), room_id uuid references rooms(id), starts_at timestamptz not null, ends_at timestamptz not null,
+  recurrence_rule text not null default 'none' check (recurrence_rule in ('none','weekly')), meeting_provider text not null default 'none' check (meeting_provider in ('none','google_meet','skyroom','other')), meeting_url text,
   status text not null default 'scheduled', check (ends_at > starts_at)
 );
 create index class_sessions_conflict_idx on class_sessions (tenant_id, starts_at, ends_at);
