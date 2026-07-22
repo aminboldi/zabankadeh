@@ -13,9 +13,9 @@ export class ClassSessionsController {
   constructor(private readonly sessions: ClassSessionsService) {}
   @Get() list(@Req() request: AuthenticatedRequest): Promise<ClassSessionSummary[]> { return this.sessions.list(request.user); }
   @Roles("owner", "branch_manager", "registrar", "academic_supervisor")
-  @Post() create(@Body() body: CreateClassSessionInput): Promise<ClassSessionSummary> { return this.sessions.create(body); }
+  @Post() create(@Req() request: AuthenticatedRequest, @Body() body: CreateClassSessionInput): Promise<ClassSessionSummary> { return this.sessions.create(body, request.user); }
   @Roles("owner", "branch_manager", "registrar", "academic_supervisor")
-  @Patch(":id") update(@Param("id") id: string, @Body() body: CreateClassSessionInput): Promise<ClassSessionSummary> { return this.sessions.update(id, body); }
+  @Patch(":id") update(@Req() request: AuthenticatedRequest, @Param("id") id: string, @Body() body: CreateClassSessionInput): Promise<ClassSessionSummary> { return this.sessions.update(id, body, request.user); }
   @Roles("owner", "branch_manager", "registrar", "academic_supervisor")
-  @Post(":id/cancel") cancel(@Param("id") id: string): Promise<ClassSessionSummary> { return this.sessions.cancel(id); }
+  @Post(":id/cancel") cancel(@Req() request: AuthenticatedRequest, @Param("id") id: string): Promise<ClassSessionSummary> { return this.sessions.cancel(id, request.user); }
 }

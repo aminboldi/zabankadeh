@@ -11,6 +11,8 @@ import { ClassSessionsService } from "../src/classes/class-sessions.service";
 import { EnrollmentsService } from "../src/classes/enrollments.service";
 import { AttendanceService } from "../src/classes/attendance.service";
 import { FinanceService } from "../src/finance.service";
+import { ForbiddenException } from "@nestjs/common";
+import type { AuthUser } from "../src/auth/auth.types";
 
 const testDatabase = "zabankadeh_test";
 let adminPool: Pool;
@@ -116,5 +118,40 @@ describe("core operational workflow", () => {
     const invoice = await finance.create({ studentId: student.id, totalRials: 15_000_000 });
     const paid = await finance.recordPayment(invoice.id, { amountRials: 15_000_000, provider: "manual" });
     expect(paid).toMatchObject({ id: invoice.id, balanceRials: 0, status: "paid" });
+  });
+
+  it("limits a branch manager to the classes assigned to their branch", async () => {
+    const classes = new ClassesService(database);
+    const options = await classes.options();
+    const primaryBranch = options.branches[0];
+    const extraBranch = await database.query<{ id: string }>(
+      "insert into branches (tenant_id, name_fa, name_en, status) values ($1, 'شعبه غرب', 'West branch', 'active') returning id",
+      ["00000000-0000-0000-0000-000000000001"],
+    );
+    const secondClass = await classes.create({
+      code: "INT-DE-A1-02",
+      branchId: extraBranch.rows[0].id,
+      termId: options.terms[0].id,
+      levelId: options.levels.find((level) => level.language === "de")?.id,
+      capacity: 10,
+      status: "active",
+    });
+    const manager: AuthUser = {
+      id: "branch-manager-test",
+      tenantId: "00000000-0000-0000-0000-000000000001",
+      mobile: "09120000003",
+      displayName: "مدیر شعبه",
+      roles: [{ role: "branch_manager", branchId: primaryBranch.id }],
+    };
+
+    const visibleClasses = await classes.list(manager);
+    expect(visibleClasses.some((item) => item.id === secondClass.id)).toBe(false);
+    await expect(classes.create({
+      code: "INT-DE-A1-03",
+      branchId: extraBranch.rows[0].id,
+      termId: options.terms[0].id,
+      levelId: options.levels.find((level) => level.language === "de")?.id,
+      capacity: 10,
+    }, manager)).rejects.toBeInstanceOf(ForbiddenException);
   });
 });
