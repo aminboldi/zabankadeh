@@ -35,6 +35,7 @@ The admin endpoint uses phone OTP sessions and role checks. For local developmen
 ```bash
 npm run typecheck
 npm test
+npm run test:integration
 npm run build
 docker compose exec -T postgres psql -U zabankadeh -d zabankadeh -c "select count(*) from assessment_questions;"
 ```

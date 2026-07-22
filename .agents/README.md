@@ -68,4 +68,4 @@
 
 ## Verification
 
-Run `npm test`, `npm run typecheck`, and `npm run build` from the repository root.
+Run `npm test`, `npm run test:integration`, `npm run typecheck`, and `npm run build` from the repository root.
