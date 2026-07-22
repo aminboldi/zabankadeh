@@ -55,8 +55,8 @@ Assessment answer keys never leave the API. Submission locks the attempt, reject
 
 ## Next implementation milestones
 
-1. OTP authentication, persistent sessions, branch-scoped RBAC, and complete audit middleware.
-2. Student/guardian, instructor, class, scheduling, enrollment, attendance, and billing workflows on top of the existing schema.
-3. Wire the included Kavenegar and ZarinPal adapters into idempotent callbacks, receipts, and SMS outbox workers.
-4. Question authoring, expert-review workflow, age-specific production banks, pilot analytics, and cut-score calibration.
-5. Repeatable per-institute provisioning, encrypted backups, monitoring, and upgrade automation.
+1. Stabilize the implemented OTP, student, instructor, class, scheduling, enrollment, attendance, assessment-review, billing, and reporting workflows with end-to-end tests and complete branch-scoped authorization checks.
+2. Replace startup-time additive schema changes with ordered, repeatable database migrations and add OTP/assessment abuse protection.
+3. Complete the Kavenegar outbox/retry workflow and ZarinPal's idempotent callback, verification, receipt, failure, and reconciliation flows.
+4. Add assessment history and student timelines, then build expert-reviewed age-specific question banks, pilot analytics, and calibrated English/German cut scores.
+5. Add recurring-series calendar management, report drill-downs and scheduled exports, then prepare per-institute provisioning, encrypted backups, monitoring, security review, and upgrade automation.

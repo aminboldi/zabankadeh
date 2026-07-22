@@ -8,6 +8,7 @@
     "dev": "npm run dev --workspace @zabankadeh/api & npm run dev --workspace @zabankadeh/web",
     "build": "npm run build --workspace @zabankadeh/contracts && npm run build --workspace @zabankadeh/api && npm run build --workspace @zabankadeh/web",
     "test": "npm run test --workspace @zabankadeh/api",
+    "test:integration": "npm run test:integration --workspace @zabankadeh/api",
     "typecheck": "npm run typecheck --workspaces --if-present"
   },
   "engines": { "node": ">=22" }

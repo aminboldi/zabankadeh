@@ -38,14 +38,33 @@
 
 ## Next work
 
-- Refine calendar drag-and-drop and recurring-series management
-- Add assessment detail history and connect lead conversion to the student detail timeline
-- Add payment gateway integrations, exports, and scheduled reports
-- Finance constraint: all payment flows target Iranian users and Iranian payment gateways only; amounts remain in rial and foreign gateways/accounts are out of scope
-- Payment gateway configuration/status endpoint and ZarinPal-compatible adapter are available; manual payments remain the default until merchant credentials and callback URL are configured
-- Enrollment and attendance
-- Billing and payment workflows
-- Expand the migration runner as new schema-backed workflows are introduced
+### 1. Stabilize the existing operational slice
+
+- Add end-to-end coverage for OTP login, student registration, class/session creation, enrollment, attendance, assessment conversion, invoicing, and manual payments
+- Review branch-scoped authorization across every admin endpoint and add negative permission tests for each staff role
+- Replace startup-time additive schema changes with ordered, repeatable database migrations
+- Add rate limiting and abuse protection to OTP and public assessment endpoints
+- Resolve validation, empty-state, loading-state, and error-recovery gaps found during full workflow testing
+
+### 2. Complete payments and messaging
+
+- Complete the ZarinPal request, callback, idempotent verification, receipt, failure, and reconciliation flows
+- Move SMS delivery to a persistent outbox worker with retries and delivery status tracking
+- Keep manual payments as the default until merchant credentials and the public callback URL are configured
+- Keep all payment flows Iranian-only and all stored amounts in rial; foreign gateways and accounts are out of scope
+
+### 3. Finish academic workflows
+
+- Add recurring-series editing/cancellation and refine calendar interaction, including drag-and-drop only if it remains useful after mobile testing
+- Add assessment attempt history and connect lead conversion to the student detail timeline
+- Add question authoring, expert review, age-specific production banks, pilot analytics, and independently calibrated English/German cut scores
+- Expand reporting with filters, scheduled exports, and attendance/finance drill-downs
+
+### 4. Prepare production operations
+
+- Add repeatable per-institute provisioning, secrets management, encrypted backups, and restore drills
+- Add structured logging, monitoring, error reporting, health checks, and deployment/upgrade automation
+- Perform a security and data-isolation review before onboarding a real institute
 
 ## Verification
 

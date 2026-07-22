@@ -12,6 +12,11 @@ const nextConfig: NextConfig = {
   output: "standalone",
   experimental: { typedEnv: false },
   turbopack: { root: path.resolve(process.cwd(), "../..") },
+  async rewrites() {
+    const apiInternalUrl = process.env.API_INTERNAL_URL;
+    if (!apiInternalUrl) return [];
+    return [{ source: "/v1/:path*", destination: `${apiInternalUrl}/v1/:path*` }];
+  },
 };
 
 export default nextConfig;
