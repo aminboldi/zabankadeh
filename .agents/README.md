@@ -23,6 +23,7 @@
 - Session-based attendance recording with present, absent, late, excused, and notes
 - Instructor OTP accounts are recognized by their registered mobile and their session list is restricted to assigned sessions
 - Instructor accounts land in a simplified attendance workspace with administrative navigation hidden
+- Owners have tenant-wide access; branch managers are restricted to their assigned branches for classes, sessions, rosters, and attendance
 - Finance workflow with rial invoices, Jalali due dates, outstanding balances, and manual payment recording
 - Management reports overview with enrollment, scheduled sessions, attendance, and outstanding finance metrics
 - Finance invoice ledger CSV export with Persian labels and rial amounts
@@ -41,7 +42,9 @@
 ### 1. Stabilize the existing operational slice
 
 - Add end-to-end coverage for OTP login, student registration, class/session creation, enrollment, attendance, assessment conversion, invoicing, and manual payments
-- Review branch-scoped authorization across every admin endpoint and add negative permission tests for each staff role
+- Define and implement branch ownership for student records, invoices, reporting, and dashboard aggregates; these are currently tenant-wide and must not be represented as branch-scoped yet
+- Add owner-only branch and staff-role administration, including assignment of a branch manager to one or more branches
+- Add negative branch-scope tests for sessions, rosters, attendance, and each newly scoped workflow
 - Replace startup-time additive schema changes with ordered, repeatable database migrations
 - Add rate limiting and abuse protection to OTP and public assessment endpoints
 - Resolve validation, empty-state, loading-state, and error-recovery gaps found during full workflow testing
